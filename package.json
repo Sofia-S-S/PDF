@@ -1,0 +1,26 @@
+{
+  "name": "paket",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "electron-html-to": "^2.6.0",
+    "inquirer": "^6.5.0",
+    "phantom-html-to-pdf": "^0.6.0"
+  },
+  "devDependencies": {},
+  "description": "Create a command-line application that dynamically generates a PDF profile from a GitHub username. The application will be invoked with the following command:",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sofia-S-S/PDF.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sofia-S-S/PDF/issues"
+  },
+  "homepage": "https://github.com/Sofia-S-S/PDF#readme"
+}
