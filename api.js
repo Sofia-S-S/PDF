@@ -7,15 +7,24 @@ const api = {
       process.exit(1);
     });
   },
-  getTotalStarts(username) {
+  getTotalStars(username) {
     return axios
-      .get(`https://api.github.com/users/${username}`)
-      .then(responce => {
-        return responce.data.reduce((acc, curr) => {
+      .get(`https://api.github.com/users/${username}/repos`)
+      .then(response => {
+        /* console.log(response.data);
+        return response.data.reduce((acc, curr) => {
           acc += curr.stargazers_count;
           return acc;
-        });
+          });
+      });
+  }*/
+        var stars = [];
+        //console.log(response)
+        console.log(response.data.starred_url);
+        stars.push(response.data.starred_url);
+        console.log("starts : " + stars.length);
       });
   }
 };
+
 module.exports = api;

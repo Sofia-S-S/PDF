@@ -1,14 +1,15 @@
 const fs = require("fs");
-//const path = re4("path");
+const path = require("path");
 const inquirer = require("inquirer");
-const api = require("./api");
+const open = require("open");
 const convertFactory = require("electron-html-to");
+const api = require("./api");
 const generateHTML = require("./generateHTML");
 const questions = [
   {
     type: "input",
-    name: "username",
-    message: "What is your github userName"
+    name: "github",
+    message: "What is your GitHub username?"
   },
   {
     type: "list",
@@ -17,32 +18,35 @@ const questions = [
     choices: ["red", "blue", "green", "pink"]
   }
 ];
-
+function writeToFile(fileName, data) {
+  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+}
 function init() {
-  inquirer.prompt(questions).then(({ username, color }) => {
+  inquirer.prompt(questions).then(({ github, color }) => {
     api
-      .getUser(username)
+      .getUser(github)
       .then(response =>
-        api.getTotalStarts(username).then(starts => {
+        api.getTotalStars(github).then(stars => {
           return generateHTML({
-            starts,
+            stars,
             color,
             ...response.data
           });
         })
       )
       .then(html => {
-        var conversion = convertFactory({
+        const conversion = convertFactory({
           converterPath: convertFactory.converters.PDF
         });
-
         conversion({ html }, function(err, result) {
           if (err) {
+            console.log("in error");
             return console.error(err);
           }
-
-          result.stream.pipe(path.join(__dirname, "resume.pdf"));
-          conversion.kill(); // necessary if you use the electron-server strategy, see bellow for details
+          result.stream.pipe(
+            fs.createWriteStream(path.join(__dirname, "resume.pdf"))
+          );
+          conversion.kill();
         });
         open(path.join(process.cwd(), "resume.pdf"));
       });
